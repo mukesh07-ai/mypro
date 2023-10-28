@@ -74,20 +74,16 @@ WSGI_APPLICATION = 'myprofile.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'cloudb',
-        'ENFORCE_SCHEMA': True,
-        'CLIENT': {
-            'host': 'mongodb+srv://mukesh:123@cluster0.reue9dx.mongodb.net/?retryWrites=true&w=majority',
-            'username': 'mukesh',
-            'password': '123',
-            'authMechanism': 'SCRAM-SHA-1'
-        }
-    }
-}
+import environ
+env = environ.Env() # set default values and casting
+environ.Env.read_env()
 
+
+import dj_database_url
+# # import env
+DATABASES={
+     'default' :  dj_database_url.parse('postgres://root:tCegloKsoTqIBdmlnUySqYZfLkAiDsJ2@dpg-ck09n8h5mpss73dduck0-a.singapore-postgres.render.com/mukeshdb')
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -129,7 +125,25 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+
+# Media files
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Messages
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+}
